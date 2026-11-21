@@ -1,0 +1,14 @@
+job_id,job_name,product,quantity,priority,due_min,operation_seq,operation_name,machine_id,machine_name,duration_min
+J-101,Support Bracket,Mild-steel support bracket,4,1,220,1,Saw bracket blank,CUT,Cutting,45
+J-101,Support Bracket,Mild-steel support bracket,4,1,220,2,Drill mounting holes,DRL,Drilling,30
+J-101,Support Bracket,Mild-steel support bracket,4,1,220,3,Deburr and finish edges,FIN,Finishing,20
+J-102,Drive Shaft,Alloy drive shaft,2,1,280,1,Cut bar to length,CUT,Cutting,60
+J-102,Drive Shaft,Alloy drive shaft,2,1,280,2,Drill cross holes,DRL,Drilling,40
+J-102,Drive Shaft,Alloy drive shaft,2,1,280,3,Finish bearing journals,FIN,Finishing,25
+J-103,Gear Blank,Hobbed gear blank,3,2,260,1,Cut gear blank,CUT,Cutting,55
+J-103,Gear Blank,Hobbed gear blank,3,2,260,2,Face and finish,FIN,Finishing,35
+J-103,Gear Blank,Hobbed gear blank,3,2,260,3,Drill centre bore,DRL,Drilling,22
+J-104,Cover Panel,Pre-cut cover panel,6,2,190,1,Drill fastener pattern,DRL,Drilling,28
+J-104,Cover Panel,Pre-cut cover panel,6,2,190,2,Finish panel edges,FIN,Finishing,32
+J-105,Cast Flange,Cast iron flange,5,3,170,1,Machine mating face,FIN,Finishing,24
+J-105,Cast Flange,Cast iron flange,5,3,170,2,Drill bolt circle,DRL,Drilling,36

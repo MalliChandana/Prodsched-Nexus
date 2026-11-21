@@ -1,0 +1,42 @@
+PRODSCHED NEXUS - UPDATED VERSION
+
+WHAT CHANGED
+- The app now has 5 simple main menu sections:
+  1. Dashboard
+  2. Manage Production (Jobs and Machines)
+  3. Production Scheduling
+  4. Disruptions & Simulation (Handle a Problem and Test Production)
+  5. Reports & Insights (plus About This Project)
+- Page titles and descriptions use simpler language.
+- Existing scheduling, disruption, simulation, database, and reporting code has been kept.
+
+IMPORTANT
+- Your original project folder was not changed.
+- This ZIP is a separate updated copy.
+- The original data files and tests are included.
+- The Python virtual environment and temporary cache folders are not included.
+  This is normal; Python will use the requirements.txt file to install packages.
+
+HOW TO OPEN IN VS CODE
+1. Extract this ZIP to a folder, for example Desktop\ProdSched-Nexus-Updated.
+2. Open VS Code.
+3. Choose File > Open Folder and select the extracted ProdSched-Nexus folder.
+4. Open Terminal > New Terminal.
+5. Run these commands one by one:
+
+   python -m venv .venv
+   .venv\Scripts\activate
+   python -m pip install --upgrade pip
+   pip install -r requirements.txt
+   streamlit run app.py
+
+6. The website should open at http://localhost:8501.
+7. Keep the terminal open while using the website.
+
+TO RUN TESTS
+After installing the requirements, run:
+   python -m pip install pytest
+   python -m pytest -v
+
+NOTE ABOUT TESTING
+The code was checked for Python syntax. Automated tests could not be run in this working environment because OR-Tools is not installed here. Install requirements.txt in your own environment before running the tests.
