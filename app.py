@@ -67,6 +67,7 @@ from scheduler import (
     solve_job_shop,
 )
 from simulator import WorkshopSimulator
+import theme
 
 # Page configuration
 st.set_page_config(
@@ -76,129 +77,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom SaaS industrial CSS styling with consistent typography and clean spacing
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        color: #0F172A;
-    }
-    
-    .block-container {
-        padding-top: 1.25rem;
-        padding-bottom: 2.5rem;
-        padding-left: 2.25rem;
-        padding-right: 2.25rem;
-        max-width: 1440px;
-    }
-    
-    /* Page Header */
-    .nexus-page-header {
-        margin-bottom: 1.25rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #E2E8F0;
-    }
-    .nexus-page-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #0F172A;
-        letter-spacing: -0.02em;
-        margin: 0;
-        line-height: 1.3;
-    }
-    .nexus-page-subtitle {
-        font-size: 0.84rem;
-        color: #64748B;
-        margin-top: 0.25rem;
-        line-height: 1.4;
-    }
-    
-    /* Clean Cards */
-    .nexus-card {
-        background-color: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        padding: 1rem 1.25rem;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-        margin-bottom: 0.85rem;
-    }
-    
-    /* Metric Cards */
-    .nexus-kpi-card {
-        background-color: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        padding: 0.85rem 1rem;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-        margin-bottom: 0.75rem;
-    }
-    .nexus-kpi-label {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: #64748B;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.25rem;
-    }
-    .nexus-kpi-val {
-        font-size: 1.55rem;
-        font-weight: 700;
-        color: #0F172A;
-        line-height: 1.2;
-    }
-    .nexus-kpi-sub {
-        font-size: 0.75rem;
-        color: #94A3B8;
-        margin-top: 0.2rem;
-    }
-    
-    /* Badges */
-    .nexus-badge {
-        display: inline-block;
-        padding: 0.15rem 0.55rem;
-        border-radius: 9999px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        line-height: 1.2;
-    }
-    .badge-success { background-color: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
-    .badge-warning { background-color: #FFFBEB; color: #B45309; border: 1px solid #FDE68A; }
-    .badge-danger { background-color: #FEF2F2; color: #B91C1C; border: 1px solid #FECACA; }
-    .badge-info { background-color: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
-    .badge-neutral { background-color: #F8FAFC; color: #475569; border: 1px solid #E2E8F0; }
-    
-    /* Callout banner */
-    .nexus-callout {
-        border-left: 3px solid #2563EB;
-        background-color: #F8FAFC;
-        border-top: 1px solid #E2E8F0;
-        border-right: 1px solid #E2E8F0;
-        border-bottom: 1px solid #E2E8F0;
-        border-radius: 0 6px 6px 0;
-        padding: 0.75rem 1rem;
-        margin-bottom: 1rem;
-        font-size: 0.86rem;
-        color: #334155;
-    }
-    
-    /* Section Headers */
-    .nexus-section-header {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #1E293B;
-        margin-top: 0.8rem;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# Visual theme (navy, white and soft teal). See theme.py.
+theme.inject_theme()
 
 
 def initialize_application_state() -> None:
@@ -245,25 +125,8 @@ initialize_application_state()
 
 # Sidebar Navigation & Branding
 with st.sidebar:
-    logo_path = Path("assets/logo.png")
-    col_logo, col_brand = st.columns([1, 3])
-    with col_logo:
-        if logo_path.exists():
-            st.image(str(logo_path), width=48)
-        else:
-            st.markdown("⚙️")
-    with col_brand:
-        st.markdown(
-            """
-            <div style="line-height: 1.15; padding-top: 4px;">
-                <span style="font-weight: 700; font-size: 1.05rem; color: #0F172A;">ProdSched Nexus</span><br/>
-                <span style="font-size: 0.72rem; color: #64748B;">Workshop Production Planner</span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("<hr style='margin: 0.6rem 0 0.8rem 0; border: none; border-top: 1px solid #E2E8F0;'/>", unsafe_allow_html=True)
+    theme.sidebar_brand(Path(__file__).resolve().parent / "assets" / "logo.png", "Workshop Production Planner")
+    st.markdown("<hr style='margin: 0.5rem 0 0.9rem 0; border: none;'/>", unsafe_allow_html=True)
 
     main_page = st.radio(
         "Main menu",
@@ -309,23 +172,7 @@ with st.sidebar:
     base_mk = st.session_state.baseline_schedule.makespan_min or 0
     rev_mk = st.session_state.revised_schedule.makespan_min or 0
 
-    st.markdown(
-        f"""
-        <div class="nexus-card" style="padding: 0.75rem 0.85rem; margin-bottom: 0.6rem;">
-            <div style="font-size: 0.72rem; font-weight: 600; color: #64748B; text-transform: uppercase;">Workshop Status</div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.35rem;">
-                <span style="font-size: 0.82rem; font-weight: 500; color: #1E293B;">Baseline Makespan:</span>
-                <span style="font-size: 0.85rem; font-weight: 700; color: #0F172A;">{base_mk} min</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem;">
-                <span style="font-size: 0.82rem; font-weight: 500; color: #1E293B;">Active State:</span>
-                {'<span class="nexus-badge badge-danger">' + str(active_disruptions) + ' Disruption(s)</span>' if active_disruptions > 0 else '<span class="nexus-badge badge-success">Nominal</span>'}
-            </div>
-            {f'<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.25rem;"><span style="font-size: 0.82rem; font-weight: 500; color: #1E293B;">Revised Makespan:</span><span style="font-size: 0.85rem; font-weight: 700; color: #DC2626;">{rev_mk} min</span></div>' if active_disruptions > 0 else ''}
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    theme.sidebar_status(base_mk, rev_mk, active_disruptions)
 
     if st.button("🔄 Reset to Canonical Baseline", use_container_width=True):
         fresh_jobs = reset_sample_data()
@@ -346,14 +193,13 @@ with st.sidebar:
 # MODULE 1: PRODUCTION DASHBOARD
 # ==============================================================================
 if page == "Dashboard":
-    st.markdown(
-        """
-        <div class="nexus-page-header">
-            <h1 class="nexus-page-title">Production Dashboard</h1>
-            <div class="nexus-page-subtitle">See how your jobs and machines are doing at a glance.</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    theme.hero(
+        "Production Dashboard",
+        "See how your jobs and machines are doing at a glance.",
+        st.session_state.revised_schedule,
+        st.session_state.machines,
+        len({op.job_id for op in st.session_state.revised_schedule.operations}) or len(st.session_state.jobs),
+        len(st.session_state.disruption_mgr.disruptions),
     )
 
     active_schedule = st.session_state.revised_schedule
@@ -392,7 +238,7 @@ if page == "Dashboard":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Completed Jobs</div>
-                <div class="nexus-kpi-val" style="color: #047857;">{kpis['completed_jobs']}</div>
+                <div class="nexus-kpi-val" style="color: #1F8A5B;">{kpis['completed_jobs']}</div>
                 <div class="nexus-kpi-sub">At schedule makespan</div>
             </div>
             """,
@@ -403,7 +249,7 @@ if page == "Dashboard":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">In Production</div>
-                <div class="nexus-kpi-val" style="color: #2563EB;">{kpis['in_production_jobs']}</div>
+                <div class="nexus-kpi-val" style="color: #0C7F74;">{kpis['in_production_jobs']}</div>
                 <div class="nexus-kpi-sub">Active in shop floor</div>
             </div>
             """,
@@ -414,7 +260,7 @@ if page == "Dashboard":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Pending Release</div>
-                <div class="nexus-kpi-val" style="color: #64748B;">{kpis['pending_jobs']}</div>
+                <div class="nexus-kpi-val" style="color: #6A7891;">{kpis['pending_jobs']}</div>
                 <div class="nexus-kpi-sub">Queued for release</div>
             </div>
             """,
@@ -432,20 +278,20 @@ if page == "Dashboard":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Original Makespan</div>
-                <div class="nexus-kpi-val">{base_mk_val} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val">{base_mk_val} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">CP-SAT proven optimal</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
     with c7:
-        val_color = "#DC2626" if delta_mk > 0 else "#0F172A"
+        val_color = "#C2414B" if delta_mk > 0 else "#12294A"
         sub_str = f"+{delta_mk} min shift" if delta_mk > 0 else "Optimal baseline"
         st.markdown(
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Revised Makespan</div>
-                <div class="nexus-kpi-val" style="color: {val_color};">{rev_mk_val} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val" style="color: {val_color};">{rev_mk_val} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">{sub_str}</div>
             </div>
             """,
@@ -463,19 +309,19 @@ if page == "Dashboard":
             unsafe_allow_html=True,
         )
     with c9:
-        dt_color = "#DC2626" if kpis['total_downtime_min'] > 0 else "#0F172A"
+        dt_color = "#C2414B" if kpis['total_downtime_min'] > 0 else "#12294A"
         st.markdown(
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Total Downtime</div>
-                <div class="nexus-kpi-val" style="color: {dt_color};">{kpis['total_downtime_min']} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val" style="color: {dt_color};">{kpis['total_downtime_min']} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">{len(active_schedule.downtimes)} breakdown interval(s)</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
     with c10:
-        delay_color = "#DC2626" if kpis['delayed_orders_count'] > 0 else "#047857"
+        delay_color = "#C2414B" if kpis['delayed_orders_count'] > 0 else "#1F8A5B"
         st.markdown(
             f"""
             <div class="nexus-kpi-card">
@@ -496,7 +342,7 @@ if page == "Dashboard":
             st.session_state.machines,
             title=f"Workshop Schedule ({'Disrupted & Revised' if active_schedule.is_disrupted else 'Baseline Optimal'}) · Makespan: {active_schedule.makespan_min} min",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        theme.themed_chart(fig, use_container_width=True)
     else:
         st.error("No valid timetable available.")
 
@@ -524,17 +370,17 @@ if page == "Dashboard":
                 <div class="nexus-card" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-weight: 700; color: #0F172A; font-size: 0.92rem;">{row['machine_name']}</span>
-                            <span style="color: #64748B; font-size: 0.78rem; margin-left: 0.3rem;">({row['machine_id']})</span>
+                            <span style="font-weight: 700; color: #12294A; font-size: 0.92rem;">{row['machine_name']}</span>
+                            <span style="color: #6A7891; font-size: 0.78rem; margin-left: 0.3rem;">({row['machine_id']})</span>
                         </div>
                         <span class="nexus-badge {status_cls}">{row['operational_status']}</span>
                     </div>
-                    <div style="display: flex; gap: 1.25rem; margin-top: 0.5rem; font-size: 0.8rem; color: #475569;">
-                        <div>Utilization: <b style="color: #0F172A;">{row['utilization_pct']}%</b></div>
-                        <div>Busy: <b style="color: #0F172A;">{row['busy_time_min']}m</b></div>
-                        <div>Downtime: <b style="color: {'#DC2626' if row['downtime_min']>0 else '#0F172A'};">{row['downtime_min']}m</b></div>
-                        <div>Idle: <b style="color: #0F172A;">{row['idle_time_min']}m</b></div>
-                        <div>Ops: <b style="color: #0F172A;">{row['operations_count']}</b></div>
+                    <div style="display: flex; gap: 1.25rem; margin-top: 0.5rem; font-size: 0.8rem; color: #3A4B66;">
+                        <div>Utilization: <b style="color: #12294A;">{row['utilization_pct']}%</b></div>
+                        <div>Busy: <b style="color: #12294A;">{row['busy_time_min']}m</b></div>
+                        <div>Downtime: <b style="color: {'#C2414B' if row['downtime_min']>0 else '#12294A'};">{row['downtime_min']}m</b></div>
+                        <div>Idle: <b style="color: #12294A;">{row['idle_time_min']}m</b></div>
+                        <div>Ops: <b style="color: #12294A;">{row['operations_count']}</b></div>
                     </div>
                 </div>
                 """,
@@ -549,12 +395,12 @@ if page == "Dashboard":
                 tag_cls = "badge-danger" if d.kind == "MACHINE_BREAKDOWN" else ("badge-warning" if d.kind == "URGENT_JOB" else "badge-info")
                 st.markdown(
                     f"""
-                    <div class="nexus-card" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-left: 3px solid #2563EB;">
+                    <div class="nexus-card" style="padding: 0.75rem 1rem; margin-bottom: 0.5rem; border-left: 3px solid #0C7F74;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
-                            <span style="font-weight: 600; font-size: 0.82rem; color: #0F172A;">{d.disruption_id}</span>
+                            <span style="font-weight: 600; font-size: 0.82rem; color: #12294A;">{d.disruption_id}</span>
                             <span class="nexus-badge {tag_cls}">{d.kind}</span>
                         </div>
-                        <div style="font-size: 0.82rem; color: #334155;">{d.description}</div>
+                        <div style="font-size: 0.82rem; color: #3A4B66;">{d.description}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -562,9 +408,9 @@ if page == "Dashboard":
         else:
             st.markdown(
                 """
-                <div class="nexus-card" style="padding: 1.25rem; text-align: center; color: #64748B;">
+                <div class="nexus-card" style="padding: 1.25rem; text-align: center; color: #6A7891;">
                     <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🟢</div>
-                    <div style="font-weight: 600; font-size: 0.86rem; color: #0F172A;">Nominal Operating Conditions</div>
+                    <div style="font-weight: 600; font-size: 0.86rem; color: #12294A;">Nominal Operating Conditions</div>
                     <div style="font-size: 0.78rem; margin-top: 0.2rem;">No disruptions recorded. Production follows the baseline optimal schedule.</div>
                 </div>
                 """,
@@ -628,7 +474,7 @@ elif page == "Job Management":
             if match_search and match_prio and match_mach:
                 filtered_jobs.append(j)
 
-        st.markdown(f"<div style='font-size:0.8rem; color:#64748B; margin-bottom: 0.5rem;'>Showing <b>{len(filtered_jobs)}</b> of <b>{len(st.session_state.jobs)}</b> production orders</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size:0.8rem; color:#6A7891; margin-bottom: 0.5rem;'>Showing <b>{len(filtered_jobs)}</b> of <b>{len(st.session_state.jobs)}</b> production orders</div>", unsafe_allow_html=True)
 
         # Table with clean, human-readable column headers and verified product names
         overview_df = jobs_to_dataframe(filtered_jobs, st.session_state.machines)
@@ -652,7 +498,7 @@ elif page == "Job Management":
             with st.expander(f"📦 {job.job_id}: {job.job_name} ({job.product}) · Priority {job.priority} · Due {job.due_min}m"):
                 st.markdown(
                     f"""
-                    <div style="font-size:0.85rem; color:#334155; margin-bottom:0.5rem;">
+                    <div style="font-size:0.85rem; color:#3A4B66; margin-bottom:0.5rem;">
                         <b>Product:</b> {job.product} &nbsp;|&nbsp;
                         <b>Lot Quantity:</b> {job.quantity} units &nbsp;|&nbsp;
                         <b>Total Processing Duration:</b> {job.total_duration_min} min {urg_pill}
@@ -801,7 +647,7 @@ elif page == "Job Management":
 
         with col_del:
             st.markdown("##### Delete Order")
-            st.markdown("<div style='font-size:0.8rem; color:#64748B;'>Removes this order completely from the workshop scheduling model.</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size:0.8rem; color:#6A7891;'>Removes this order completely from the workshop scheduling model.</div>", unsafe_allow_html=True)
             if st.button("🗑️ Delete Order", use_container_width=True):
                 if len(st.session_state.jobs) <= 1:
                     st.error("At least one production order is required.")
@@ -855,23 +701,23 @@ elif page == "Machine Management":
                     f"""
                     <div class="nexus-card">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span style="font-weight:700; font-size:1.02rem; color:#0F172A;">{m.name}</span>
+                            <span style="font-weight:700; font-size:1.02rem; color:#12294A;">{m.name}</span>
                             <span class="nexus-badge {badge_cls}">{m.status}</span>
                         </div>
-                        <div style="color:#64748B; font-size:0.78rem; margin-top:0.15rem;">ID: <b>{m.machine_id}</b></div>
-                        <div style="margin-top:0.6rem; font-size:0.82rem; color:#334155; line-height:1.3;">{m.description}</div>
+                        <div style="color:#6A7891; font-size:0.78rem; margin-top:0.15rem;">ID: <b>{m.machine_id}</b></div>
+                        <div style="margin-top:0.6rem; font-size:0.82rem; color:#3A4B66; line-height:1.3;">{m.description}</div>
                         <hr style="margin: 0.7rem 0; border: none; border-top: 1px solid #E2E8F0;" />
                         <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.2rem;">
-                            <span style="color:#64748B;">Utilization:</span>
-                            <b style="color:#0F172A;">{util}%</b>
+                            <span style="color:#6A7891;">Utilization:</span>
+                            <b style="color:#12294A;">{util}%</b>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.2rem;">
-                            <span style="color:#64748B;">Busy Processing:</span>
-                            <b style="color:#0F172A;">{busy} min</b>
+                            <span style="color:#6A7891;">Busy Processing:</span>
+                            <b style="color:#12294A;">{busy} min</b>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-                            <span style="color:#64748B;">Downtime:</span>
-                            <b style="color:{'#DC2626' if down>0 else '#0F172A'};">{down} min</b>
+                            <span style="color:#6A7891;">Downtime:</span>
+                            <b style="color:{'#C2414B' if down>0 else '#12294A'};">{down} min</b>
                         </div>
                     </div>
                     """,
@@ -902,7 +748,7 @@ elif page == "Machine Management":
 
         st.markdown('<div class="nexus-section-header">Workstation Load & Time Allocation</div>', unsafe_allow_html=True)
         fig_util = create_utilization_bar_chart(mach_metrics)
-        st.plotly_chart(fig_util, use_container_width=True)
+        theme.themed_chart(fig_util, use_container_width=True)
 
     with tab_mach_add:
         st.markdown('<div class="nexus-section-header">Register a New Workstation</div>', unsafe_allow_html=True)
@@ -1019,7 +865,7 @@ elif page == "Schedule Optimizer":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Solver Status</div>
-                <div class="nexus-kpi-val" style="color: #047857; font-size: 1.35rem;">{current_sched.status}</div>
+                <div class="nexus-kpi-val" style="color: #1F8A5B; font-size: 1.35rem;">{current_sched.status}</div>
                 <div class="nexus-kpi-sub">{current_sched.solver}</div>
             </div>
             """,
@@ -1030,7 +876,7 @@ elif page == "Schedule Optimizer":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Makespan</div>
-                <div class="nexus-kpi-val">{current_sched.makespan_min} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val">{current_sched.makespan_min} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">Shift completion time</div>
             </div>
             """,
@@ -1041,7 +887,7 @@ elif page == "Schedule Optimizer":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Best Bound</div>
-                <div class="nexus-kpi-val">{current_sched.best_bound_min} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val">{current_sched.best_bound_min} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">Optimality gap: 0.0%</div>
             </div>
             """,
@@ -1052,7 +898,7 @@ elif page == "Schedule Optimizer":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Solve Wall Time</div>
-                <div class="nexus-kpi-val">{current_sched.wall_time_s:.4f} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">s</span></div>
+                <div class="nexus-kpi-val">{current_sched.wall_time_s:.4f} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">s</span></div>
                 <div class="nexus-kpi-sub">Search execution time</div>
             </div>
             """,
@@ -1064,7 +910,7 @@ elif page == "Schedule Optimizer":
             f"""
             <div class="nexus-kpi-card">
                 <div class="nexus-kpi-label">Theoretical LB</div>
-                <div class="nexus-kpi-val">{lb} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                <div class="nexus-kpi-val">{lb} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                 <div class="nexus-kpi-sub">Max load / longest job</div>
             </div>
             """,
@@ -1079,7 +925,7 @@ elif page == "Schedule Optimizer":
         st.session_state.machines,
         title=f"CP-SAT Optimized Timetable · Makespan: {current_sched.makespan_min} min",
     )
-    st.plotly_chart(fig_gantt, use_container_width=True)
+    theme.themed_chart(fig_gantt, use_container_width=True)
 
     # Detailed Schedule Table
     st.markdown('<div class="nexus-section-header">Scheduled Operations Timetable</div>', unsafe_allow_html=True)
@@ -1123,7 +969,7 @@ elif page == "Disruption Center":
 
     with disruption_tabs[0]:
         st.markdown('<div class="nexus-section-header">Scenario A: Inject Machine Breakdown</div>', unsafe_allow_html=True)
-        st.markdown("<div style='font-size:0.84rem; color:#64748B; margin-bottom:0.75rem;'>Enforce an unexpected machine downtime window. Operations cannot overlap with the repair interval.</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:0.84rem; color:#6A7891; margin-bottom:0.75rem;'>Enforce an unexpected machine downtime window. Operations cannot overlap with the repair interval.</div>", unsafe_allow_html=True)
 
         with st.form("breakdown_form"):
             b1, b2, b3 = st.columns(3)
@@ -1154,7 +1000,7 @@ elif page == "Disruption Center":
 
     with disruption_tabs[1]:
         st.markdown('<div class="nexus-section-header">Scenario B: Insert Urgent Production Order</div>', unsafe_allow_html=True)
-        st.markdown("<div style='font-size:0.84rem; color:#64748B; margin-bottom:0.75rem;'>Dynamically insert an expedited rush customer order into the active schedule.</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:0.84rem; color:#6A7891; margin-bottom:0.75rem;'>Dynamically insert an expedited rush customer order into the active schedule.</div>", unsafe_allow_html=True)
 
         with st.form("urgent_job_form"):
             u1, u2, u3 = st.columns(3)
@@ -1204,7 +1050,7 @@ elif page == "Disruption Center":
 
     with disruption_tabs[2]:
         st.markdown('<div class="nexus-section-header">Scenario C: Increase Operation Processing Delay</div>', unsafe_allow_html=True)
-        st.markdown("<div style='font-size:0.84rem; color:#64748B; margin-bottom:0.75rem;'>Simulate processing delays caused by tool wear, hard casting material, or extended calibration.</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:0.84rem; color:#6A7891; margin-bottom:0.75rem;'>Simulate processing delays caused by tool wear, hard casting material, or extended calibration.</div>", unsafe_allow_html=True)
 
         all_ops_choices = []
         for j in st.session_state.jobs:
@@ -1288,7 +1134,7 @@ elif page == "Disruption Center":
         st.session_state.revised_schedule,
         st.session_state.jobs,
     )
-    st.plotly_chart(fig_comp, use_container_width=True)
+    theme.themed_chart(fig_comp, use_container_width=True)
 
 
 # ==============================================================================
@@ -1347,7 +1193,7 @@ elif page == "Production Simulation":
                 f"""
                 <div class="nexus-kpi-card">
                     <div class="nexus-kpi-label">Simulated Makespan</div>
-                    <div class="nexus-kpi-val">{sim_res.makespan_min:.1f} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                    <div class="nexus-kpi-val">{sim_res.makespan_min:.1f} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                     <div class="nexus-kpi-sub">Actual workshop end</div>
                 </div>
                 """,
@@ -1358,7 +1204,7 @@ elif page == "Production Simulation":
                 f"""
                 <div class="nexus-kpi-card">
                     <div class="nexus-kpi-label">Total Waiting Time</div>
-                    <div class="nexus-kpi-val">{sum_dict['total_waiting_min']} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                    <div class="nexus-kpi-val">{sum_dict['total_waiting_min']} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                     <div class="nexus-kpi-sub">Sum of queue delays</div>
                 </div>
                 """,
@@ -1380,7 +1226,7 @@ elif page == "Production Simulation":
                 f"""
                 <div class="nexus-kpi-card">
                     <div class="nexus-kpi-label">Downtime Incurred</div>
-                    <div class="nexus-kpi-val" style="color: {'#DC2626' if sum_dict['total_downtime_min']>0 else '#0F172A'};">{sum_dict['total_downtime_min']} <span style="font-size:0.85rem; font-weight:500; color:#64748B;">min</span></div>
+                    <div class="nexus-kpi-val" style="color: {'#C2414B' if sum_dict['total_downtime_min']>0 else '#12294A'};">{sum_dict['total_downtime_min']} <span style="font-size:0.85rem; font-weight:500; color:#6A7891;">min</span></div>
                     <div class="nexus-kpi-sub">Machine breakdowns</div>
                 </div>
                 """,
@@ -1391,7 +1237,7 @@ elif page == "Production Simulation":
                 f"""
                 <div class="nexus-kpi-card">
                     <div class="nexus-kpi-label">Tardy Orders</div>
-                    <div class="nexus-kpi-val" style="color: {'#DC2626' if sum_dict['tardy_jobs_count']>0 else '#047857'};">{sum_dict['tardy_jobs_count']}</div>
+                    <div class="nexus-kpi-val" style="color: {'#C2414B' if sum_dict['tardy_jobs_count']>0 else '#1F8A5B'};">{sum_dict['tardy_jobs_count']}</div>
                     <div class="nexus-kpi-sub">Breached delivery date</div>
                 </div>
                 """,
@@ -1478,16 +1324,16 @@ elif page == "Analytics & Reports":
     v1, v2 = st.columns(2)
     with v1:
         fig1 = create_utilization_bar_chart(mach_df)
-        st.plotly_chart(fig1, use_container_width=True)
+        theme.themed_chart(fig1, use_container_width=True)
 
     with v2:
         fig2 = create_waiting_time_chart(job_df)
-        st.plotly_chart(fig2, use_container_width=True)
+        theme.themed_chart(fig2, use_container_width=True)
 
     v3, v4 = st.columns(2)
     with v3:
         fig3 = create_tardiness_chart(job_df)
-        st.plotly_chart(fig3, use_container_width=True)
+        theme.themed_chart(fig3, use_container_width=True)
 
     with v4:
         base_val = st.session_state.baseline_schedule.makespan_min or 210
@@ -1516,15 +1362,15 @@ elif page == "Analytics & Reports":
             ]
         )
         fig4.update_layout(
-            title=dict(text="<b>Production Makespan Across Phases</b>", font=dict(family="Inter, sans-serif", size=13, color="#0F172A")),
+            title=dict(text="<b>Production Makespan Across Phases</b>", font=dict(family="Inter, sans-serif", size=13, color="#12294A")),
             plot_bgcolor="#F8FAFC",
             paper_bgcolor="#FFFFFF",
-            yaxis=dict(title="Minutes", title_font=dict(family="Inter, sans-serif", size=11, color="#64748B"), gridcolor="#F1F5F9"),
-            xaxis=dict(tickfont=dict(family="Inter, sans-serif", size=11, color="#0F172A")),
+            yaxis=dict(title="Minutes", title_font=dict(family="Inter, sans-serif", size=11, color="#6A7891"), gridcolor="#F1F5F9"),
+            xaxis=dict(tickfont=dict(family="Inter, sans-serif", size=11, color="#12294A")),
             height=300,
             margin=dict(l=45, r=20, t=45, b=35),
         )
-        st.plotly_chart(fig4, use_container_width=True)
+        theme.themed_chart(fig4, use_container_width=True)
 
     # Machine Performance Summary Table
     st.markdown('<div class="nexus-section-header">Workstation Utilization & Workload Summary</div>', unsafe_allow_html=True)
